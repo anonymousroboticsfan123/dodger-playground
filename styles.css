@@ -1,0 +1,496 @@
+:root {
+    color-scheme: dark;
+    --bg: #060b13;
+    --panel: rgba(9, 15, 27, 0.78);
+    --panel-border: rgba(148, 163, 184, 0.16);
+    --text: #e5eefc;
+    --muted: #93a4bc;
+    --accent: #38bdf8;
+    --accent-warm: #f97316;
+    --accent-soft: #22c55e;
+    --danger: #ef4444;
+    --warning: #fde047;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+    background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent 28%),
+        radial-gradient(circle at top right, rgba(249, 115, 22, 0.08), transparent 25%),
+        linear-gradient(180deg, #070b14 0%, #02060d 100%);
+    color: var(--text);
+    font-family: "Space Grotesk", sans-serif;
+}
+
+body {
+    padding: 5px 12px 8px;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+body.unitree-g1-active {
+    padding: 0;
+    overflow: hidden;
+    background: #08111d;
+}
+
+.canvas-stack {
+    position: relative;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
+    background: #08111d;
+}
+
+#unitreeG1Host {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: hidden;
+    touch-action: none;
+    background: #08111d;
+}
+
+.unitree-g1-viewport,
+.unitree-g1-viewport canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.unitree-g1-initial-loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 12px;
+    padding: 24px;
+    text-align: center;
+    color: #dbeafe;
+    background:
+        radial-gradient(circle at 50% 42%, rgba(56, 189, 248, 0.14), transparent 25%),
+        #08111d;
+}
+
+.unitree-g1-initial-loading small {
+    max-width: 440px;
+    color: #8ca3bd;
+}
+
+.unitree-g1-initial-loading.error {
+    color: #fecaca;
+}
+
+.unitree-g1-initial-loading.error small {
+    color: #fca5a5;
+}
+
+.unitree-g1-loader {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid rgba(125, 211, 252, 0.18);
+    border-top-color: #7dd3fc;
+    animation: unitree-g1-spin 900ms linear infinite;
+}
+
+@keyframes unitree-g1-spin {
+    to { transform: rotate(360deg); }
+}
+
+.unitree-g1-hud {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 12;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    pointer-events: none;
+    font-family: "IBM Plex Mono", monospace;
+}
+
+.unitree-g1-status,
+.unitree-g1-metrics,
+.unitree-g1-help {
+    border: 1px solid rgba(125, 211, 252, 0.18);
+    background: rgba(5, 13, 25, 0.74);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(14px);
+}
+
+.unitree-g1-status {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-radius: 999px;
+    padding: 8px 12px;
+    color: #e0f2fe;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+}
+
+.unitree-g1-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.8);
+}
+
+.unitree-g1-hud.error .unitree-g1-status {
+    color: #fecaca;
+    border-color: rgba(248, 113, 113, 0.35);
+}
+
+.unitree-g1-hud.error .unitree-g1-status-dot {
+    background: #f87171;
+    box-shadow: 0 0 12px rgba(248, 113, 113, 0.8);
+}
+
+.unitree-g1-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    border-radius: 13px;
+    padding: 8px 12px;
+    color: #8ca3bd;
+    font-size: 10px;
+}
+
+.unitree-g1-metrics strong {
+    color: #dbeafe;
+    font-weight: 500;
+}
+
+.unitree-g1-pause-btn {
+    min-width: 92px;
+    padding: 7px 13px;
+    border: 1px solid rgba(125, 211, 252, 0.32);
+    border-radius: 999px;
+    color: #dbeafe;
+    background: rgba(15, 31, 48, 0.82);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(14px);
+    cursor: pointer;
+    pointer-events: auto;
+    font: 600 10px "IBM Plex Mono", monospace;
+    letter-spacing: 0.05em;
+    transition:
+        border-color 120ms ease,
+        color 120ms ease,
+        background 120ms ease;
+}
+
+.unitree-g1-pause-btn:hover:not(:disabled),
+.unitree-g1-pause-btn:focus-visible {
+    border-color: rgba(56, 189, 248, 0.72);
+    color: #f0f9ff;
+    outline: none;
+}
+
+.unitree-g1-pause-btn.active {
+    border-color: rgba(74, 222, 128, 0.66);
+    color: #dcfce7;
+    background: rgba(20, 83, 45, 0.7);
+}
+
+.unitree-g1-pause-btn:disabled {
+    cursor: default;
+    opacity: 0.48;
+}
+
+.unitree-g1-help {
+    position: absolute;
+    left: 18px;
+    bottom: 18px;
+    z-index: 12;
+    max-width: calc(100vw - 36px);
+    padding: 8px 12px;
+    border-radius: 999px;
+    color: #a8bdd2;
+    font: 500 10px "IBM Plex Mono", monospace;
+    pointer-events: none;
+}
+
+.unitree-g1-minimap-panel {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    z-index: 16;
+    width: 238px;
+    padding: 9px;
+    border: 1px solid rgba(125, 211, 252, 0.22);
+    border-radius: 16px;
+    color: #dbeafe;
+    background: rgba(4, 11, 21, 0.86);
+    box-shadow: 0 18px 54px rgba(0, 0, 0, 0.36);
+    backdrop-filter: blur(16px);
+    font: 500 9px "IBM Plex Mono", monospace;
+    pointer-events: auto;
+    user-select: none;
+}
+
+.unitree-g1-minimap-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 1px 7px;
+}
+
+.unitree-g1-minimap-head span {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    letter-spacing: 0.08em;
+}
+
+.unitree-g1-minimap-head small {
+    color: #64748b;
+    font-size: 7px;
+}
+
+.unitree-g1-dpcbf-toggle,
+.unitree-g1-map-tools button {
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 7px;
+    color: #9fb3c8;
+    background: rgba(15, 23, 42, 0.78);
+    cursor: pointer;
+    font: 600 8px "IBM Plex Mono", monospace;
+    letter-spacing: 0.04em;
+    transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+}
+
+.unitree-g1-dpcbf-toggle {
+    padding: 5px 7px;
+}
+
+.unitree-g1-dpcbf-toggle.active {
+    border-color: rgba(74, 222, 128, 0.52);
+    color: #bbf7d0;
+    background: rgba(20, 83, 45, 0.42);
+}
+
+.unitree-g1-dpcbf-toggle.off {
+    border-color: rgba(248, 113, 113, 0.45);
+    color: #fecaca;
+    background: rgba(127, 29, 29, 0.34);
+}
+
+.unitree-g1-minimap {
+    position: static !important;
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1;
+    border-radius: 9px;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.unitree-g1-command-key {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 2px 0;
+    color: #8ca3bd;
+    font-size: 8px;
+}
+
+.unitree-g1-command-key span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.unitree-g1-command-key i {
+    display: inline-block;
+    width: 18px;
+    height: 3px;
+    border-radius: 999px;
+}
+
+.unitree-g1-command-key .nominal {
+    background: #38bdf8;
+}
+
+.unitree-g1-command-key .filtered {
+    height: 4px;
+    background: #facc15;
+}
+
+.unitree-g1-map-tools {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    padding-top: 7px;
+}
+
+.unitree-g1-map-tools button {
+    min-width: 0;
+    padding: 5px 2px;
+}
+
+.unitree-g1-map-tools button:hover,
+.unitree-g1-map-tools button.active {
+    border-color: rgba(56, 189, 248, 0.5);
+    color: #e0f2fe;
+    background: rgba(14, 116, 144, 0.28);
+}
+
+.unitree-g1-safety-readout {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 1fr;
+    gap: 4px;
+    margin-top: 7px;
+    color: #64748b;
+    font-size: 7px;
+}
+
+.unitree-g1-safety-readout span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.unitree-g1-safety-readout strong {
+    color: #cbd5e1;
+    font-size: 8px;
+    font-weight: 600;
+}
+
+.unitree-g1-safety-readout strong.active {
+    color: #fde047;
+}
+
+.unitree-g1-filter-params {
+    margin-top: 6px;
+    color: #7890a8;
+    font-size: 7px;
+    letter-spacing: 0.015em;
+}
+
+.failure-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    background: rgba(3, 8, 15, 0.08);
+    pointer-events: none;
+}
+
+.failure-overlay[hidden] {
+    display: none;
+}
+
+.failure-overlay > * {
+    z-index: 1;
+}
+
+.failure-overlay h2 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.failure-overlay p {
+    margin: 0;
+    max-width: 360px;
+    color: #fecaca;
+}
+
+body.unitree-g1-active .failure-overlay {
+    position: fixed;
+    z-index: 100;
+    align-content: end;
+    padding: 0 16px 24px;
+    color: #fee2e2;
+    background: rgba(3, 8, 15, 0.08);
+}
+
+body.unitree-g1-active .failure-overlay h2 {
+    font-size: 1.2rem;
+}
+
+body.unitree-g1-active .failure-overlay p {
+    padding: 0 20px;
+}
+
+@media (max-width: 720px) {
+    body.unitree-g1-active .unitree-g1-hud {
+        top: 66px;
+        left: 10px;
+    }
+
+    body.unitree-g1-active .unitree-g1-help {
+        display: none;
+    }
+
+    body.unitree-g1-active .unitree-g1-minimap-panel {
+        right: 8px;
+        bottom: 8px;
+        width: min(190px, calc(100vw - 16px));
+        padding: 7px;
+    }
+
+    body.unitree-g1-active .unitree-g1-safety-readout,
+    body.unitree-g1-active .unitree-g1-filter-params {
+        display: none;
+    }
+}
+:root { --dodger-accent: #38bdf8; }
+.dodger-controls { position: absolute; z-index: 120; top: 20px; right: 20px; width: min(475px, calc(100vw - 40px)); padding: 13px; border: 1px solid #294158; border-radius: 12px; background: rgba(5, 15, 27, .91); color: #c7dae9; font: 11px 'IBM Plex Mono', monospace; box-shadow: 0 10px 35px #0005; }
+.dodger-controls-heading { display: flex; flex-direction: column; gap: 5px; color: #e1f1fc; font-weight: 700; margin-bottom: 10px; }
+.dodger-controls-heading span { color: #7895ad; font-weight: 400; }
+.dodger-policy-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.dodger-controls button { cursor: pointer; font: inherit; color: #b5ccde; background: #122336; border: 1px solid #294158; border-radius: 6px; padding: 7px 6px; }
+.dodger-policy-buttons button { min-height: 38px; padding: 6px; font-weight: 700; }
+.dodger-controls button[aria-pressed="true"] { border-color: #38bdf8; color: #e3f7ff; background: #104361; }
+.dodger-controls button:disabled { opacity: .44; cursor: default; }
+.dodger-controls button small { display: block; font-size: 8px; font-weight: 400; margin-top: 3px; }
+.dodger-scene-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-top: 9px; font-size: 9px; }
+.dodger-scene-controls [data-run-info] { margin-right: auto; }
+.dodger-run-info { margin-top: 0; font-size: 9px; line-height: 1.6; color: #87a7be; }
+@media (max-width: 760px) {
+    .dodger-controls { top: 8px; right: 10px; width: calc(100vw - 20px); padding: 9px; }
+    .dodger-controls-heading { font-size: 9px; }
+    .dodger-policy-buttons button { font-size: 9px; }
+    body.unitree-g1-active .unitree-g1-hud { top: var(--dodger-controls-bottom, 210px); left: 10px; }
+}
+
+.failure-card { pointer-events: none; display: grid; justify-items: center; gap: 8px; padding: 14px 20px; max-width: 420px; border: 1px solid #ad657855; border-radius: 12px; background: rgba(9, 19, 31, .93); box-shadow: 0 8px 25px #0004; }
+.failure-card p { font-size: 11px; line-height: 1.5; }
+.failure-replay-hint { color: #fff0f0; font-size: 11px; }
+body.simulation-stopped .unitree-g1-help { display: none; }
+.dodger-cone-inspector { margin-top: 8px; padding-top: 7px; border-top: 1px solid #294158; font-size: 10px; line-height: 1.6; }
+.dodger-cone-inspector label { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+.dodger-cone-inspector select { color: #dcefff; background: #122336; border: 1px solid #42607b; border-radius: 5px; padding: 4px 7px; font: inherit; }
+.dodger-cone-inspector p { margin: 5px 0 0; color: #87a7be; font-size: 9px; }
+.unitree-g1-command-key [hidden] { display: none; }
+@media (max-width: 760px) { .failure-card { max-width: calc(100vw - 230px); justify-self: start; padding: 10px; } }
+
+.dodger-cone-body { display: flex; align-items: center; gap: 10px; }
+.dodger-cone-body > div { flex: 1; }
+.dodger-cone-body figure { flex: 0 0 96px; margin: 0; }
+.dodger-cone-body canvas { display: block; width: 96px; height: 66px; border: 1px solid #294158; border-radius: 6px; background: #09121e; }
+.dodger-cone-body figcaption { text-align: center; font-size: 7px; color: #87a7be; margin-top: 2px; }
+
+.unitree-g1-minimap-head [data-gat-key] { color: #c084fc; font-size: 7px; letter-spacing: 0; }
+.unitree-g1-minimap-head [data-gat-key][hidden] { display: none; }
