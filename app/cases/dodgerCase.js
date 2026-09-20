@@ -1,11 +1,11 @@
-import { UnitreeG1Case } from './unitreeG1Case.js?v=dodger-3';
+import { UnitreeG1Case } from './unitreeG1Case.js?v=dodger-5';
 import { DodgerRuntime } from '../dodger/runtime.js?v=dodger-3';
 import { NavigationPolicies } from '../dodger/policy.js?v=dodger-3';
 import { DODGER_CONFIG as C, NAVIGATION_POLICIES, clamp, integrateCommand, wrapAngle } from '../dodger/config.js?v=dodger-3';
 import { createScenario, sampleGoal, advanceObstacles, collisionAt } from '../dodger/scenario.js?v=dodger-3';
 import { buildNavigationGraph } from '../dodger/observations.js?v=dodger-3';
-import { getG1DpcbfOverlayColor } from '../unitree_g1/interactionOverlay.js?v=dodger-3';
-import { solveAnalyticController, analyticDiagnostics, learnedDiagnostics } from '../dodger/baselines.js?v=dodger-3';
+import { getG1DpcbfOverlayColor } from '../unitree_g1/interactionOverlay.js?v=dodger-5';
+import { solveAnalyticController, analyticDiagnostics, learnedDiagnostics } from '../dodger/baselines.js?v=dodger-4';
 
 export class DodgerCase extends UnitreeG1Case {
     constructor(hostEl) {

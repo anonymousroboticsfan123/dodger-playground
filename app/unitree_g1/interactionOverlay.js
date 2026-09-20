@@ -42,6 +42,7 @@ export class UnitreeG1InteractionOverlay {
         this.drag = null;
         this.preview = null;
         this.dpcbfEnabled = true;
+        this.expanded = false;
         this.size = MINIMAP_SIZE;
         this.mapCenter = [0, 0];
         this.mapTarget = [0, 0];
@@ -58,10 +59,19 @@ export class UnitreeG1InteractionOverlay {
         this.root.innerHTML = `
             <div class="unitree-g1-minimap-head">
                 <span><strong>BEV MAP</strong><small data-gat-key hidden title="Connections used by the graph encoder">GAT edges</small></span>
-                <button type="button" class="unitree-g1-dpcbf-toggle active"
-                    data-g1-dpcbf aria-pressed="true">DPCBF ON</button>
+                <div class="unitree-g1-minimap-actions">
+                    <button type="button" class="unitree-g1-dpcbf-toggle active"
+                        data-g1-dpcbf aria-pressed="true">DPCBF ON</button>
+                    <button type="button" class="unitree-g1-map-expand" data-g1-map-expand
+                        aria-label="Expand BEV map" title="Expand BEV map"
+                        aria-expanded="false" aria-controls="unitree-g1-bev-map">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M3 9V3h6M3 3l6 6m12 6v6h-6m6 0-6-6" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <canvas class="unitree-g1-minimap" width="${MINIMAP_SIZE}"
+            <canvas id="unitree-g1-bev-map" class="unitree-g1-minimap" width="${MINIMAP_SIZE}"
                 height="${MINIMAP_SIZE}" role="img"
                 aria-label="BEV map for goals, slow moving obstacles, and DPCBF diagnostics."></canvas>
             <div class="unitree-g1-command-key" aria-label="Joystick command legend">
@@ -86,11 +96,12 @@ export class UnitreeG1InteractionOverlay {
                 α — · kλ — · kμ — · scale —
             </div>
         `;
-        this.hostEl.appendChild(this.root);
+        (this.hostEl.closest('.canvas-stack') ?? this.hostEl).appendChild(this.root);
 
         this.canvas = this.root.querySelector('canvas');
         this.ctx = this.canvas.getContext('2d');
         this.dpcbfButton = this.root.querySelector('[data-g1-dpcbf]');
+        this.expandButton = this.root.querySelector('[data-g1-map-expand]');
         this.clearanceText = this.root.querySelector('[data-g1-clearance]');
         this.barrierText = this.root.querySelector('[data-g1-barrier]');
         this.filterStateText = this.root.querySelector('[data-g1-filter-state]');
@@ -101,6 +112,7 @@ export class UnitreeG1InteractionOverlay {
             this.setDpcbfEnabled(!this.dpcbfEnabled);
             this.callbacks.onDpcbfToggle?.(this.dpcbfEnabled);
         });
+        this.expandButton.addEventListener('click', () => this.setExpanded(!this.expanded));
         for (const button of this.modeButtons) {
             button.addEventListener('click', () => this.setMode(button.dataset.g1MapMode));
         }
@@ -119,6 +131,19 @@ export class UnitreeG1InteractionOverlay {
                 if (type === 'contextmenu') event.preventDefault();
             });
         }
+    }
+
+    setExpanded(expanded) {
+        this.cancelDrag();
+        this.expanded = Boolean(expanded);
+        this.root.classList.toggle('expanded', this.expanded);
+        const label = this.expanded ? 'Collapse BEV map' : 'Expand BEV map';
+        this.expandButton.setAttribute('aria-expanded', String(this.expanded));
+        this.expandButton.setAttribute('aria-label', label);
+        this.expandButton.title = label;
+        this.expandButton.querySelector('path').setAttribute('d', this.expanded
+            ? 'M9 3v6H3m6 0L3 3m12 18v-6h6m-6 0 6 6'
+            : 'M3 9V3h6M3 3l6 6m12 6v6h-6m6 0-6-6');
     }
 
     setMode(mode) {

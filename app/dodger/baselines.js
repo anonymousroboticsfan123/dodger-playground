@@ -67,10 +67,9 @@ export function solveAnalyticController(method,robot,obstacles,command,nominalAc
 }
 
 function analyticOverlay(method,robot,obstacle,value) {
-    let points;
-    if(method==='distance_cbf') {
-        points=Array.from({length:65},(_,i)=>{const angle=2*Math.PI*i/64;return [obstacle.x+value.safetyRadius*Math.cos(angle),obstacle.y+value.safetyRadius*Math.sin(angle)];});
-    } else {
+
+    let points=[];
+    if(method!=='distance_cbf') {
         const bearing=Math.atan2(obstacle.y-robot.position[1],obstacle.x-robot.position[0]);
         const distance=Math.hypot(obstacle.x-robot.position[0],obstacle.y-robot.position[1]);
         const halfAngle=Math.asin(Math.min(1,value.safetyRadius/Math.max(distance,1e-8)));
@@ -78,7 +77,7 @@ function analyticOverlay(method,robot,obstacle,value) {
 
         points=[ray(bearing+Math.PI-halfAngle),robot.position.slice(0,2),ray(bearing+Math.PI+halfAngle)];
     }
-    return {type:method==='distance_cbf'?'distance-circle':'collision-cone',obstacleId:obstacle.id,points,unsafe:value.h<0,
+    return {type:method==='distance_cbf'?'distance':'collision-cone',obstacleId:obstacle.id,points,unsafe:value.h<0,
         unsafeFill:method==='c3bf'?points:null,
         relativeVelocityArrow:{start:robot.position.slice(0,2),end:[robot.position[0]+value.relativeVelocity[0],robot.position[1]+value.relativeVelocity[1]]}};
 }

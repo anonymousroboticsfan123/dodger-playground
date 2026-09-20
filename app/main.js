@@ -90,7 +90,7 @@ async function frame(now) {
 
 async function initialize() {
     try {
-        const { DodgerCase } = await import('./cases/dodgerCase.js?v=dodger-3');
+        const { DodgerCase } = await import('./cases/dodgerCase.js?v=dodger-5');
         unitreeG1Case = new DodgerCase(unitreeG1Host);
         unitreeG1Case.setActive(true);
         await unitreeG1Case.initialize();

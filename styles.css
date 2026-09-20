@@ -232,7 +232,7 @@ body.unitree-g1-active {
     right: 18px;
     bottom: 18px;
     z-index: 16;
-    width: 238px;
+    width: min(238px, calc(100vw - 36px), calc(100dvh - 160px));
     padding: 9px;
     border: 1px solid rgba(125, 211, 252, 0.22);
     border-radius: 16px;
@@ -253,6 +253,18 @@ body.unitree-g1-active {
     padding: 0 1px 7px;
 }
 
+.unitree-g1-minimap-panel.expanded {
+    z-index: 130;
+    width: min(360px, calc(100vw - 36px), calc(100dvh - 160px));
+}
+
+.unitree-g1-minimap-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 4px;
+}
+
 .unitree-g1-minimap-head span {
     display: flex;
     align-items: baseline;
@@ -260,12 +272,21 @@ body.unitree-g1-active {
     letter-spacing: 0.08em;
 }
 
+.unitree-g1-minimap-head > span {
+    flex-wrap: wrap;
+    min-width: 0;
+    gap: 3px 6px;
+}
+
+.unitree-g1-minimap-head strong { white-space: nowrap; }
+
 .unitree-g1-minimap-head small {
     color: #64748b;
     font-size: 7px;
 }
 
 .unitree-g1-dpcbf-toggle,
+.unitree-g1-map-expand,
 .unitree-g1-map-tools button {
     border: 1px solid rgba(148, 163, 184, 0.2);
     border-radius: 7px;
@@ -275,6 +296,36 @@ body.unitree-g1-active {
     font: 600 8px "IBM Plex Mono", monospace;
     letter-spacing: 0.04em;
     transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+}
+
+.unitree-g1-map-expand {
+    display: grid;
+    place-items: center;
+    width: 25px;
+    height: 25px;
+    padding: 4px;
+}
+
+.unitree-g1-map-expand svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.unitree-g1-map-expand:hover,
+.unitree-g1-map-expand[aria-expanded="true"] {
+    color: #e0f2fe;
+    border-color: #38bdf8;
+    background: #104361;
+}
+
+.unitree-g1-map-expand:focus-visible {
+    outline: 2px solid #38bdf8;
+    outline-offset: 2px;
 }
 
 .unitree-g1-dpcbf-toggle {
@@ -446,8 +497,12 @@ body.unitree-g1-active .failure-overlay p {
     body.unitree-g1-active .unitree-g1-minimap-panel {
         right: 8px;
         bottom: 8px;
-        width: min(190px, calc(100vw - 16px));
+        width: min(190px, calc(100vw - 16px), calc(100dvh - 110px));
         padding: 7px;
+    }
+
+    body.unitree-g1-active .unitree-g1-minimap-panel.expanded {
+        width: min(340px, calc(100vw - 16px), calc(100dvh - 110px));
     }
 
     body.unitree-g1-active .unitree-g1-safety-readout,

@@ -4,7 +4,7 @@ import {
     sampleReachableGoal
 } from '../unitree_g1/navigation.js?v=dodger-3';
 import { UnitreeG1DpcbfFilter } from '../unitree_g1/dpcbfFilter.js?v=dodger-3';
-import { UnitreeG1InteractionOverlay } from '../unitree_g1/interactionOverlay.js?v=dodger-3';
+import { UnitreeG1InteractionOverlay } from '../unitree_g1/interactionOverlay.js?v=dodger-5';
 import {
     G1_OBSTACLE_DEFAULTS,
     advanceG1Obstacles,
